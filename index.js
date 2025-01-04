@@ -1,7 +1,6 @@
 import { startUdpServer, createResponse, createTxtAnswer } from "denamed";
 import{ GoogleGenerativeAI } from "@google/generative-ai";
 import 'dotenv/config';
-import basir from "./basir.json" assert { type: 'json' };
 const genAI = new GoogleGenerativeAI(process.env.AI_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
 startUdpServer(async (query) => {
@@ -78,7 +77,7 @@ startUdpServer(async (query) => {
     //for tutorial
     else if(first=="tutorial"){
         try{
-            const prompt = `You have this json ${basir}
+            const prompt = `You have this json
             {
     "title":"Javascript Interview Questions and Preparation",
     "link":"https://youtube.com/playlist?list=PLinedj3B30sDi0keEOQU3n5p3Op28eN2e&si=fsP5QXdiiGEvTqDG"
@@ -166,6 +165,42 @@ startUdpServer(async (query) => {
     based on this json title and link are there . Based on this title of every json generate most appropriate link for this question if not found any relavancy generate "NOT FOUND IN PIYUSH GARG PLAYLIST" Other wise generate in this format Title:"",Link:"",.Donot generate any extra information.
             Question is ${actualprompt}
 
+            `
+    
+            const result = await model.generateContent(prompt);
+            let ans = result.response.text();
+            console.log(ans)
+            let response = createResponse(query, [createTxtAnswer(question, ans)]);
+            return response;
+        }
+        catch(err){
+            let response = createResponse(query, [createTxtAnswer(question, "Sorry we can not process your request at this time. We are facing heavy traffic.")]);
+        return response;
+        }
+    }
+    //for courses
+    //for tutorial
+    else if(first=="course"){
+        try{
+            const prompt = `You have this json
+            {
+    "title":"Docker - Containerisation for Modern Development",
+    "link":"https://pro.piyushgarg.dev/learn/docker"
+}
+{
+    "title":"Full Stack Twitter Clone",
+    "link":"https://learn.piyushgarg.dev/learn/twitter-clone"
+}
+{
+    "title":"Master NextJS 14",
+    "link":"https://learn.piyushgarg.dev/learn/nextjs-14"
+}
+{
+    "title":"Web Dev Cohort",
+    "link":"https://www.piyushgarg.dev/cohort"
+}
+     based on this json title and link are there . Based on this title of every json generate most appropriate link for this question if not found any relavancy generate "NOT FOUND IN PIYUSH COURSE" Other wise generate in this format Title:"",Link:"",.Donot generate any extra information.
+            Question is ${actualprompt}
             `
     
             const result = await model.generateContent(prompt);

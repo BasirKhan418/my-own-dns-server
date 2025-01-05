@@ -52,6 +52,7 @@ startUdpServer(async (query) => {
             return response;
         }
         catch (err) {
+            console.log(err)
             let response = createResponse(query, [createTxtAnswer(question, "ERROR OCCURED " + err)]);
             return response;
         }
@@ -70,6 +71,7 @@ startUdpServer(async (query) => {
         return response;
         }
         catch(err){
+            console.log(err)
             let response = createResponse(query, [createTxtAnswer(question, "Sorry we can not process your request at this time. We are facing heavy traffic.")]);
         return response;
         }
@@ -174,6 +176,7 @@ startUdpServer(async (query) => {
             return response;
         }
         catch(err){
+            console.log(err)
             let response = createResponse(query, [createTxtAnswer(question, "Sorry we can not process your request at this time. We are facing heavy traffic.")]);
         return response;
         }
@@ -210,6 +213,7 @@ startUdpServer(async (query) => {
             return response;
         }
         catch(err){
+            console.log(err)
             let response = createResponse(query, [createTxtAnswer(question, "Sorry we can not process your request at this time. We are facing heavy traffic.")]);
         return response;
         }
